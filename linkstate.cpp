@@ -24,13 +24,32 @@ map<int, vector<int>> dijkstra(map<int, vector<vector<int>>> graph, int source){
     int min = 100000;
     int node = -1;
     int last_node = -2;
+    cout<<"cpt 0.5"<<endl;
+    for(auto&pair: graph){
+        cout<<"hey in graph: "<<pair.first<<" vector size: "<<pair.second.size()<<endl;
+    }
+    cout<<front.count(0)<<endl;
+    cout<<front.count(3)<<endl;
+    vector<int> isolatedNodes;
     for(auto&pair: front){
+        cout<<"pair.first "<<pair.first<<endl;
         if(pair.second.size() == 0){
-            front.erase(pair.first);
-            predecessor.erase(pair.first);
+            /*if(front.count(pair.first) == 1){
+                front.erase(pair.first);
+            }
+            if(predecessor.count(pair.first) == 1){
+                predecessor.erase(pair.first);
+            }*/
+            isolatedNodes.push_back(pair.first);
+            cout<<"cpt 0.8"<<endl;
+            cout<<"cpt 0.9"<<endl;
         }
     }
-    
+    for(const auto&n:isolatedNodes){
+        front.erase(n);
+        predecessor.erase(n);
+    }
+    cout<<"cpt 1"<<endl;
     while(front.empty()!= true){
         // find the smallest distance in front
         //cout<<"min: "<<min<<endl;
@@ -101,7 +120,6 @@ map<int, vector<int>> dijkstra(map<int, vector<vector<int>>> graph, int source){
         cout<<" pred: "<<pair.second[0];
         cout<<" cost: "<<pair.second[1]<<endl;
     }
-    int a = predecessor[10][2];
 
     return predecessor;
 
@@ -148,9 +166,12 @@ map<int, map<int, vector<int>>> forwardingTable(map<int, vector<vector<int>>> gr
     for(const auto&pair: graph){// pair.first is the source/node, entries.first is destination
         //cout<<"node on forwarding table: "<<pair.first<<endl;
         cout<<"pair.first: "<<pair.first<<endl;
+        cout<<"graph[pair.first]: "<<graph[pair.first].size()<<endl;
         if(graph[pair.first].size() == 0){      // dealt with isolated node
+            cout<<"table 1"<<endl;
             forwarding_path_table[pair.first][pair.first] = {{pair.first, 0}};
         }else{
+            cout<<"table 2"<<endl;
             hold = dijkstra(graph, pair.first);
             cout<<"check2"<<endl;
             for(const auto&entries: hold){
@@ -170,6 +191,7 @@ map<int, map<int, vector<int>>> forwardingTable(map<int, vector<vector<int>>> gr
         }
         
     }
+    cout<<"completed check"<<endl;
     return forwarding_path_table;
 
 }
